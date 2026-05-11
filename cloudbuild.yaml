@@ -1,0 +1,14 @@
+steps:
+  - name: 'hashicorp/terraform:latest'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        terraform init
+        terraform validate
+        terraform plan
+        terraform apply -auto-approve
+    dir: 'terraform'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
