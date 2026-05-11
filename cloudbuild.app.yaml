@@ -1,0 +1,33 @@
+steps:
+  # Build Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/sales-app/sales-platform:$COMMIT_SHA'
+      - '.'
+    dir: 'app'
+
+  # Push to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/sales-app/sales-platform:$COMMIT_SHA'
+
+  # Deploy to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'sales-platform'
+      - '--image'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/sales-app/sales-platform:$COMMIT_SHA'
+      - '--region'
+      - 'us-central1'
+      - '--service-account'
+      - 'cloud-run-sa@$PROJECT_ID.iam.gserviceaccount.com'
+      - '--vpc-connector'
+      - 'sales-connector'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
