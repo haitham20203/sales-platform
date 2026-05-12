@@ -9,3 +9,4 @@ variable "region" {
 variable "zone" {
   default = "us-central1-a"
 }
+# demo comment
