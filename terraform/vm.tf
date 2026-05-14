@@ -1,6 +1,6 @@
 resource "google_compute_instance" "app_vm" {
   name         = "sales-vm"
-  machine_type = "e2-micro"
+  machine_type = "e2-medium"
   zone         = var.zone
 
   boot_disk {
